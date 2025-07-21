@@ -1,0 +1,14 @@
+// start.mp3
+// This is a placeholder for the start sound notification.
+// To use actual sounds:
+// 1. Replace this file with an actual MP3 audio file
+// 2. Ensure it's named start.mp3
+// 3. Place it in the sounds directory
+
+// Sound Description: A short chime or bell sound to indicate the start of a study session
+// Recommended duration: 1-2 seconds
+// Recommended format: MP3 (for best browser compatibility)
+
+// Example usage in JavaScript:
+// const startSound = new Audio('sounds/start.mp3');
+// startSound.play();
