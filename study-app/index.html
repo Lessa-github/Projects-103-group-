@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Timer & Productivity App</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>STUDY PRODUCTIVITY HUB</h1>
+        
+        <div class="timer-section">
+            <h2>POMODORO TIMER</h2>
+            <div class="timer-display" id="timer">25:00</div>
+            <div class="controls">
+                <button id="startBtn">Start!</button>
+                <button id="pauseBtn">Pause!</button>
+                <button id="resetBtn">Reset!</button>
+                <button id="stopBtn">Stop!</button>
+            </div>
+            
+            <div class="session-info">
+                <p>Study Session: <span id="currentSession">Web Development</span></p>
+                <p>Session <span id="sessionCount">1</span> of 4 planned</p>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h2>TODAY'S PROGRESS</h2>
+            <div class="progress-metrics">
+                <p>Study Time: <span id="studyTime">0h 0m</span></p>
+                <p>Sessions: <span id="sessionCountDisplay">0</span></p>
+                <p>Task Completed: <span id="tasksCompleted">0</span>/<span id="totalTasks">0</span></p>
+                <p><span id="goalProgress">0%</span> daily goal</p>
+            </div>
+        </div>
+
+        <div class="quick-tasks">
+            <h2>QUICK TASKS</h2>
+            <ul id="taskList">
+                <!-- Tasks will be dynamically added here -->
+            </ul>
+        </div>
+
+        <div class="navigation">
+            <a href="tasks.html">[Task Manager]</a>
+            <a href="stats.html">[Study Stats]</a>
+            <a href="settings.html">[Settings]</a>
+        </div>
+    </div>
+
+    <script src="js/timer.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

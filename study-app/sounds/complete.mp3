@@ -1,0 +1,14 @@
+// complete.mp3
+// This is a placeholder for the complete sound notification.
+// To use actual sounds:
+// 1. Replace this file with an actual MP3 audio file
+// 2. Ensure it's named complete.mp3
+// 3. Place it in the sounds directory
+
+// Sound Description: A pleasant tone to indicate the completion of a study session
+// Recommended duration: 2-3 seconds
+// Recommended format: MP3 (for best browser compatibility)
+
+// Example usage in JavaScript:
+// const completeSound = new Audio('sounds/complete.mp3');
+// completeSound.play();

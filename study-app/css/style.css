@@ -1,0 +1,251 @@
+/* style.css */
+/* Main Styles for Study Timer & Productivity App */
+
+:root {
+    --primary-color: #2196f3; /* Calm blue for focus */
+    --success-color: #4caf50; /* Green for completed tasks */
+    --warning-color: #ff9800; /* Orange for medium priority */
+    --urgent-color: #f44336; /* Red for high priority */
+    --background-color: #f5f5f5; /* Light gray background */
+    --text-color: #333333; /* Dark gray text */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Timer Section */
+.timer-section {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.timer-display {
+    font-size: 4rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-family: 'Courier New', monospace;
+    margin: 1rem 0;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.controls button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#startBtn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+#pauseBtn {
+    background-color: var(--warning-color);
+    color: white;
+}
+
+#stopBtn {
+    background-color: var(--urgent-color);
+    color: white;
+}
+
+.session-info {
+    margin-top: 1rem;
+}
+
+/* Progress Section */
+.progress-section, .quick-tasks {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+}
+
+.progress-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.progress-metrics p {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+
+/* Quick Tasks */
+.quick-tasks ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.quick-tasks li {
+    padding: 0.5rem 0;
+}
+
+/* Task Priority Colors */
+.high-priority {
+    color: var(--urgent-color);
+}
+
+.medium-priority {
+    color: var(--warning-color);
+}
+
+.low-priority {
+    color: var(--success-color);
+}
+
+/* Navigation Links */
+.navigation {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Form Styles */
+.form-group {
+    margin: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.form-group label {
+    width: 100px;
+    font-weight: bold;
+}
+
+.form-group select, .form-group input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-buttons {
+    margin-top: 1rem;
+}
+
+.form-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Task List */
+.task-list ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.task-item {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+
+.task-item.high {
+    border-left: 5px solid var(--urgent-color);
+}
+
+.task-item.medium {
+    border-left: 5px solid var(--warning-color);
+}
+
+.task-item.low {
+    border-left: 5px solid var(--success-color);
+}
+
+.task-actions {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.task-actions button {
+    padding: 0.3rem 0.5rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.complete-btn {
+    background-color: var(--success-color);
+}
+
+.edit-btn {
+    background-color: var(--warning-color);
+}
+
+.delete-btn {
+    background-color: var(--urgent-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .timer-display {
+        font-size: 3rem;
+    }
+    
+    .navigation {
+        flex-direction: column;
+    }
+    
+    .progress-metrics {
+        grid-template-columns: 1fr;
+    }
+}
