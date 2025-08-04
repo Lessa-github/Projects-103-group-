@@ -1,96 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Statistics</title>
-    <link rel="stylesheet" href="../css/style.css">
+  <meta charset="UTF-8">
+  <title>Study Stats</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>STUDY STATISTICS</h1>
-        
-        <div class="stats-section">
-            <h2>DAILY BREAKDOWN</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Monday</h3>
-                    <p><span id="mondayTime">0h 0m</span></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Tuesday</h3>
-                    <p><span id="tuesdayTime">0h 0m</span></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Wednesday</h3>
-                    <p><span id="wednesdayTime">0h 0m</span></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Thursday</h3>
-                    <p><span id="thursdayTime">0h 0m</span></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Friday</h3>
-                    <p><span id="fridayTime">0h 0m</span></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Saturday</h3>
-                    <p><span id="saturdayTime">0h 0m</span></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Sunday</h3>
-                    <p><span id="sundayTime">0h 0m</span></p>
-                </div>
-            </div>
+  <div class="container">
+    <header>
+      <h1>STUDY STATISTICS</h1>
+    </header>
+    <main>
+      <section class="week-progress">
+        <h2>THIS WEEK'S PROGRESS</h2>
+        <div id="weekStats">
         </div>
-        
-        <div class="stats-section">
-            <h2>SUBJECT BREAKDOWN</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Mathematics</h3>
-                    <p><span id="mathematicsTime">0h 0m</span> (<span id="mathematicsPercent">0</span>%)</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Web Development</h3>
-                    <p><span id="webdevelopmentTime">0h 0m</span> (<span id="webdevelopmentPercent">0</span>%)</p>
-                </div>
-                <div class="stat-card">
-                    <h3>History</h3>
-                    <p><span id="historyTime">0h 0m</span> (<span id="historyPercent">0</span>%)</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Chemistry</h3>
-                    <p><span id="chemistryTime">0h 0m</span> (<span id="chemistryPercent">0</span>%)</p>
-                </div>
-            </div>
+      </section>
+      <section class="daily-breakdown">
+        <h2>DAILY BREAKDOWN</h2>
+        <div id="dailyBreakdown">
         </div>
-        
-        <div class="stats-section">
-            <h2>PRODUCTIVITY INSIGHTS</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Best Time of Day</h3>
-                    <p><span id="bestTime">Unknown</span> - <span id="bestTimeAvg">0</span> average minutes per session</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Longest Study Streak</h3>
-                    <p><span id="longestStreak">0</span> consecutive days</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Weekly Goal Progress</h3>
-                    <p><span id="weekGoalProgress">0%</span> completed</p>
-                </div>
-            </div>
+      </section>
+      <section class="subject-breakdown">
+        <h2>SUBJECT BREAKDOWN</h2>
+        <div id="subjectBreakdown">
         </div>
-        
-        <div class="navigation">
-            <a href="index.html">[Study Dashboard]</a>
-            <a href="tasks.html">[Task Manager]</a>
-            <a href="settings.html">[Settings]</a>
+      </section>
+      <section class="productivity-insights">
+        <h2>PRODUCTIVITY INSIGHTS</h2>
+        <div id="insights">
         </div>
-    </div>
-
-    <script src="../js/script.js"></script>
+        <button id="exportReport">Export Report</button>
+        <button id="setGoals">Set Goals</button>
+      </section>
+      <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="tasks.html">Task Manager</a>
+        <a href="stats.html">Study Stats</a>
+      </nav>
+    </main>
+  </div>
+  <script src="js/script.js"></script>
 </body>
 </html>
