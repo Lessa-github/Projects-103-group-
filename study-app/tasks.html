@@ -1,45 +1,59 @@
-<!-- tasks.html com layout padronizado e estilizado -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task Manager</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="container">
-    <header class="header">
-      <h1>📋 Task Manager</h1>
+    <header>
+      <h1>Task Manager</h1>
+    </header>
+    <main>
+      <section class="add-task">
+        <h2>ADD NEW TASK</h2>
+        <form id="taskForm">
+          <input type="text" id="taskTitle" placeholder="Task" required>
+          <input type="text" id="taskSubject" placeholder="Subject" required>
+          <select id="taskPriority">
+            <option value="high">High</option>
+            <option value="medium" selected>Medium</option>
+            <option value="low">Low</option>
+          </select>
+          <input type="date" id="taskDueDate" required>
+          <input type="number" id="taskEstTime" placeholder="Est. Time (min)" min="1" required>
+          <button type="submit">Add Task</button>
+          <button type="reset" id="clearBtn">Clear</button>
+        </form>
+      </section>
+      <section class="filters">
+        <label>Filter:</label>
+        <select id="filterPriority">
+          <option value="all">All</option>
+          <option value="high">High Priority</option>
+          <option value="medium">Medium Priority</option>
+          <option value="low">Low Priority</option>
+        </select>
+        <input type="text" id="searchTask" placeholder="🔍 Search">
+      </section>
+      <section>
+        <h2>PENDING TASKS</h2>
+        <div id="pendingTasks">
+        </div>
+      </section>
+      <section>
+        <h2>COMPLETED TODAY</h2>
+        <div id="completedTasks">
+        </div>
+      </section>
       <nav>
         <a href="index.html">Dashboard</a>
-        <a href="stats.html">Statistics</a>
-        <a href="settings.html">Settings</a>
+        <a href="tasks.html">Task Manager</a>
+        <a href="stats.html">Study Stats</a>
       </nav>
-    </header>
-
-    <section>
-      <h2>Add New Task</h2>
-      <form id="taskForm">
-        <input type="text" id="title" placeholder="Task Title" required>
-        <input type="text" id="subject" placeholder="Subject" required>
-        <select id="priority">
-          <option value="high">🔴 High</option>
-          <option value="medium">🟡 Medium</option>
-          <option value="low">🟢 Low</option>
-        </select>
-        <input type="date" id="dueDate" required>
-        <input type="number" id="estimatedTime" placeholder="Estimated time (min)" required>
-        <button type="submit">Add Task</button>
-      </form>
-    </section>
-
-    <section>
-      <h2>Pending Tasks</h2>
-      <div id="taskList" class="task-list"></div>
-    </section>
+    </main>
   </div>
-
   <script src="js/script.js"></script>
 </body>
 </html>
