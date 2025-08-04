@@ -1,251 +1,196 @@
-/* style.css */
-/* Main Styles for Study Timer & Productivity App */
-
-:root {
-    --primary-color: #2196f3; /* Calm blue for focus */
-    --success-color: #4caf50; /* Green for completed tasks */
-    --warning-color: #ff9800; /* Orange for medium priority */
-    --urgent-color: #f44336; /* Red for high priority */
-    --background-color: #f5f5f5; /* Light gray background */
-    --text-color: #333333; /* Dark gray text */
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: Arial, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    line-height: 1.6;
-    padding: 20px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  margin: 0;
+  min-height: 100vh;
 }
-
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-width: 500px;
+  background: #fff;
+  margin: 30px auto;
+  border-radius: 15px;
+  box-shadow: 0 4px 24px #0001;
+  padding: 2rem 1.5rem 2rem 1.5rem;
 }
-
-h1, h2 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
+header {
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
-
-a {
-    color: var(--primary-color);
-    text-decoration: none;
-    margin-right: 10px;
+h1 {
+  color: #2196f3;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
 }
-
-a:hover {
-    text-decoration: underline;
+main section {
+  margin-bottom: 2rem;
+  background: #f8fafd;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px #2196f308;
 }
-
-/* Timer Section */
-.timer-section {
-    text-align: center;
-    margin-bottom: 2rem;
+.timer-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
 }
-
 .timer-display {
-    font-size: 4rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    font-family: 'Courier New', monospace;
-    margin: 1rem 0;
+  font-size: 2.7rem;
+  font-weight: bold;
+  text-align: center;
+  color: #2196f3;
+  font-family: 'Courier New', monospace;
 }
-
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 1rem;
+.progress-ring {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 10px solid #e0e0e0;
+  border-top: 10px solid #2196f3;
+  margin-bottom: 8px;
+  transition: all 0.5s ease;
 }
-
-.controls button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.timer-controls button {
+  background: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  margin: 0 6px;
+  font-size: 1.1rem;
+  padding: 8px 18px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px #0002;
+  transition: background 0.2s;
 }
-
-#startBtn {
-    background-color: var(--success-color);
-    color: white;
+.timer-controls button:hover {
+  background: #1976d2;
 }
-
-#pauseBtn {
-    background-color: var(--warning-color);
-    color: white;
+.progress-today .progress-bar {
+  width: 100%;
+  height: 16px;
+  background: #e0e0e0;
+  border-radius: 7px;
+  margin: 12px 0;
+  overflow: hidden;
 }
-
-#stopBtn {
-    background-color: var(--urgent-color);
-    color: white;
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.5s;
 }
-
-.session-info {
-    margin-top: 1rem;
+.quick-tasks ul, .quick-tasks #quickTaskList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
-
-/* Progress Section */
-.progress-section, .quick-tasks {
-    background-color: #f9f9f9;
-    padding: 1rem;
-    border-radius: 4px;
-    margin-bottom: 2rem;
-}
-
-.progress-metrics {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-}
-
-.progress-metrics p {
-    background-color: white;
-    padding: 1rem;
-    border-radius: 4px;
-    text-align: center;
-    box-shadow: 0 0 5px rgba(0,0,0,0.05);
-}
-
-/* Quick Tasks */
-.quick-tasks ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
 .quick-tasks li {
-    padding: 0.5rem 0;
+  margin-bottom: 7px;
+  font-size: 1.02rem;
 }
+.quick-tasks .high { color: #f44336; font-weight: 500; }
+.quick-tasks .medium { color: #ff9800; }
+.quick-tasks .low { color: #4caf50; }
 
-/* Task Priority Colors */
-.high-priority {
-    color: var(--urgent-color);
+.add-task form,
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-bottom: 1em;
 }
-
-.medium-priority {
-    color: var(--warning-color);
+.add-task input,
+.add-task select,
+.filters select,
+.filters input {
+  padding: 7px;
+  font-size: 1em;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  outline: none;
 }
-
-.low-priority {
-    color: var(--success-color);
+.add-task button {
+  background: #2196f3;
+  color: #fff;
+  border: none;
+  padding: 0.6em 1.4em;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
 }
-
-/* Navigation Links */
-.navigation {
-    margin-top: 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+.add-task button:hover {
+  background: #1976d2;
 }
-
-/* Form Styles */
-.form-group {
-    margin: 1rem 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+.filters select, .filters input {
+  min-width: 110px;
 }
-
-.form-group label {
-    width: 100px;
-    font-weight: bold;
+#pendingTasks .task-card,
+#completedTasks .task-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px #0001;
+  padding: 1em;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  border-left: 7px solid #2196f3;
+  position: relative;
 }
-
-.form-group select, .form-group input {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.form-buttons {
-    margin-top: 1rem;
-}
-
-.form-buttons button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* Task List */
-.task-list ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.task-item {
-    background-color: #fff;
-    padding: 1rem;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 0 5px rgba(0,0,0,0.05);
-}
-
-.task-item.high {
-    border-left: 5px solid var(--urgent-color);
-}
-
-.task-item.medium {
-    border-left: 5px solid var(--warning-color);
-}
-
-.task-item.low {
-    border-left: 5px solid var(--success-color);
-}
+#pendingTasks .task-card.high { border-color: #f44336; }
+#pendingTasks .task-card.medium { border-color: #ff9800; }
+#pendingTasks .task-card.low { border-color: #4caf50; }
 
 .task-actions {
-    margin-top: 0.5rem;
-    display: flex;
-    gap: 0.5rem;
+  display: flex;
+  gap: 0.6em;
+  margin-top: 0.7em;
 }
-
 .task-actions button {
-    padding: 0.3rem 0.5rem;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
+  border: none;
+  padding: 5px 13px;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #2196f3;
+  color: #fff;
+  font-size: 1em;
+  transition: background 0.15s;
+}
+.task-actions button.complete { background: #4caf50; }
+.task-actions button.edit { background: #ff9800; }
+.task-actions button.delete { background: #f44336; }
+.task-actions button:hover { opacity: 0.85; }
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+}
+nav a {
+  flex: 1;
+  background: #2196f3;
+  color: #fff;
+  text-align: center;
+  padding: 0.8em 0;
+  border-radius: 7px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+  margin: 0 2px;
+}
+nav a:hover {
+  background: #1565c0;
 }
 
-.complete-btn {
-    background-color: var(--success-color);
-}
-
-.edit-btn {
-    background-color: var(--warning-color);
-}
-
-.delete-btn {
-    background-color: var(--urgent-color);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-    
-    .timer-display {
-        font-size: 3rem;
-    }
-    
-    .navigation {
-        flex-direction: column;
-    }
-    
-    .progress-metrics {
-        grid-template-columns: 1fr;
-    }
+/* Responsivo */
+@media (max-width: 600px) {
+  .container {
+    max-width: 97vw;
+    padding: 1rem 0.3rem 2rem 0.3rem;
+  }
+  .timer-box { font-size: 1.1rem; }
+  .timer-display { font-size: 2rem; }
+  nav a { padding: 0.6em 0; font-size: 1em; }
 }
