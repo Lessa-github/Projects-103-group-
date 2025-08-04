@@ -1,135 +1,209 @@
-// timer.js
-// Pomodoro Timer Logic
+let timerInterval = null;
+let timerState = {
+  isRunning: false,
+  mode: "work", // "work" or "break"
+  sessionTaskId: null,
+  plannedSessions: 4,
+  session: 1,
+  startTimestamp: null, // Epoch ms when started
+  elapsedBeforePause: 0, // seconds
+  duration: 25 * 60,     // work duration (seconds)
+  breakDuration: 5 * 60, // break duration (seconds)
+};
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Timer variables
-    const timerDisplay = document.getElementById('timer');
-    const startBtn = document.getElementById('startBtn');
-    const pauseBtn = document.getElementById('pauseBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    
-    // Timer state
-    let timerState = {
-        minutes: 25,
-        seconds: 0,
-        isRunning: false,
-        currentSession: null,
-        totalSeconds: 1500, // 25 minutes
-        breakMinutes: 5,
-        breakSeconds: 0
-    };
-    
-    // Load saved timer state from localStorage if available
+function getActiveTask() {
+  let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  return tasks.find(t => t.id === timerState.sessionTaskId) || null;
+}
+
+function getTodayString() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function getTodaysTasks() {
+  let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  let today = getTodayString();
+  return tasks.filter(t => t.dueDate === today);
+}
+
+function updateSessionCountDisplay() {
+  let todaysTasks = getTodaysTasks();
+  let completed = todaysTasks.filter(t => t.completed).length;
+  let total = todaysTasks.length;
+  let txt = total
+    ? `${completed} of ${total} tasks completed today`
+    : `No tasks scheduled for today`;
+  if (document.getElementById("sessionCount"))
+    document.getElementById("sessionCount").textContent = txt;
+}
+
+function getTimeLeft() {
+  let total = timerState.mode === "work" ? timerState.duration : timerState.breakDuration;
+  let elapsed = timerState.elapsedBeforePause;
+  if (timerState.isRunning && timerState.startTimestamp) {
+    elapsed += Math.floor((Date.now() - timerState.startTimestamp) / 1000);
+  }
+  return Math.max(total - elapsed, 0);
+}
+
+function updateTimerDisplay() {
+  let timeLeft = getTimeLeft();
+  let min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+  let sec = String(timeLeft % 60).padStart(2, '0');
+  if (document.getElementById("timerDisplay"))
+    document.getElementById("timerDisplay").textContent = `${min}:${sec}`;
+  let task = getActiveTask();
+  if (document.getElementById("sessionTask"))
+    document.getElementById("sessionTask").textContent = "Study Session: " + (task ? (task.title || "Select a task") : "General");
+
+  // Progress ring
+  let total = timerState.mode === "work" ? timerState.duration : timerState.breakDuration;
+  let percent = (timeLeft / total) * 100;
+  if (document.getElementById("progressRing"))
+    document.getElementById("progressRing").style.background =
+      `conic-gradient(#2196f3 ${percent}%, #e0e0e0 ${percent}% 100%)`;
+
+  updateSessionCountDisplay();
+}
+
+function startTimer() {
+  if (timerState.isRunning) return;
+
+  timerState.isRunning = true;
+  timerState.startTimestamp = Date.now();
+
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    updateTimerDisplay();
+    let timeLeft = getTimeLeft();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      timerState.isRunning = false;
+      timerState.elapsedBeforePause = 0;
+      timerState.startTimestamp = null;
+      playSound('complete');
+      // Agora SEMPRE salva a sessão ao terminar
+      if (timerState.mode === "work") saveStudySession();
+      if (timerState.mode === "work") {
+        timerState.mode = "break";
+        alert("Break Time! 5 minutes.");
+      } else {
+        timerState.mode = "work";
+        timerState.session++;
+        if (timerState.session > timerState.plannedSessions) timerState.session = 1;
+        alert("Back to study!");
+      }
+      saveTimerState();
+      updateDashboardStats && updateDashboardStats();
+      updateTimerDisplay();
+      setTimeout(startTimer, 1000); // next cycle
+    }
+    saveTimerState();
+  }, 1000);
+
+  playSound('start');
+  saveTimerState();
+}
+
+function pauseTimer() {
+  if (!timerState.isRunning) return;
+  timerState.isRunning = false;
+  if (timerState.startTimestamp) {
+    timerState.elapsedBeforePause += Math.floor((Date.now() - timerState.startTimestamp) / 1000);
+    timerState.startTimestamp = null;
+  }
+  clearInterval(timerInterval);
+  saveTimerState();
+  updateTimerDisplay();
+}
+
+function stopTimer() {
+  timerState.isRunning = false;
+  timerState.mode = "work";
+  timerState.session = 1;
+  timerState.sessionTaskId = null;
+  timerState.startTimestamp = null;
+  timerState.elapsedBeforePause = 0;
+  clearInterval(timerInterval);
+  saveTimerState();
+  updateTimerDisplay();
+}
+
+function playSound(type) {
+  try {
+    let audio = new Audio(type === "start" ? "sounds/start.mp3" : "sounds/complete.mp3");
+    audio.play();
+  } catch {}
+}
+
+function saveTimerState() {
+  localStorage.setItem("timerState", JSON.stringify(timerState));
+}
+function loadTimerState() {
+  let data = localStorage.getItem("timerState");
+  if (data) {
+    Object.assign(timerState, JSON.parse(data));
+    updateTimerDisplay();
+    if (timerState.isRunning) {
+      clearInterval(timerInterval);
+      timerState.startTimestamp = Date.now();
+      startTimer();
+    }
+  }
+}
+
+// Salva sessão vinculada à tarefa ou como "General" se não tiver selecionado
+function saveStudySession() {
+  let sessions = JSON.parse(localStorage.getItem("studySessions") || "[]");
+  let now = new Date();
+  let task = getActiveTask();
+  sessions.push({
+    subject: task ? (task.subject || task.title || "General") : "General",
+    duration: timerState.duration / 60,
+    date: now.toISOString().split("T")[0],
+    startTime: now.toTimeString().split(" ")[0],
+    completed: true,
+    taskId: task ? (task.id || null) : null
+  });
+  localStorage.setItem("studySessions", JSON.stringify(sessions));
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("timerDisplay")) {
     loadTimerState();
-    
-    // Update display with current timer state
-    updateDisplay();
-    
-    // Event listeners for timer buttons
-    startBtn.addEventListener('click', startTimer);
-    pauseBtn.addEventListener('click', pauseTimer);
-    stopBtn.addEventListener('click', stopTimer);
-    resetBtn.addEventListener('click', resetTimer);
-    
-    // Start the timer
-    function startTimer() {
-        if (!timerState.isRunning) {
-            timerState.isRunning = true;
-            updateDisplay();
-            
-            // Save timer state every second
-            setInterval(saveTimerState, 1000);
-            
-            // Update timer every second
-            setInterval(() => {
-                if (timerState.isRunning && timerState.totalSeconds > 0) {
-                    timerState.totalSeconds--;
-                    updateDisplay();
-                    
-                    // Check if session is complete
-                    if (timerState.totalSeconds === 0) {
-                        completeSession();
-                    }
-                }
-            }, 1000);
-        }
-    }
-    
-    // Pause the timer
-    function pauseTimer() {
-        timerState.isRunning = false;
-        updateDisplay();
-    }
-    
-    // Stop the timer and reset to 25 minutes
-    function stopTimer() {
-        timerState.minutes = 25;
-        timerState.seconds = 0;
-        timerState.totalSeconds = 1500;
-        timerState.isRunning = false;
-        updateDisplay();
-        saveTimerState();
-    }
-    
-    // Reset the timer to 25 minutes without stopping it
-    function resetTimer() {
-        timerState.minutes = 25;
-        timerState.seconds = 0;
-        timerState.totalSeconds = 1500;
-        timerState.isRunning = false; // Keep the timer paused after reset
-        updateDisplay();
-        saveTimerState();
-    }
-    
-    // Update the timer display
-    function updateDisplay() {
-        timerState.minutes = Math.floor(timerState.totalSeconds / 60);
-        timerState.seconds = timerState.totalSeconds % 60;
-        
-        const displayTime = `${timerState.minutes.toString().padStart(2, '0')}:${timerState.seconds.toString().padStart(2, '0')}`;
-        timerDisplay.textContent = displayTime;
-    }
-    
-    // Complete a study session
-    function completeSession() {
-        timerState.isRunning = false;
-        updateDisplay();
-        
-        // TODO: Implement session completion handling
-        console.log('Study session completed');
-        
-        // You could add a notification here
-        // or switch to break mode
-    }
-    
-    // Save timer state to localStorage
-    function saveTimerState() {
-        localStorage.setItem('timerState', JSON.stringify(timerState));
-    }
-    
-    // Load timer state from localStorage
-    function loadTimerState() {
-        const saved = localStorage.getItem('timerState');
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-                timerState.minutes = parsed.minutes;
-                timerState.seconds = parsed.seconds;
-                timerState.totalSeconds = parsed.totalSeconds;
-                timerState.isRunning = parsed.isRunning;
-                timerState.currentSession = parsed.currentSession;
-                
-                // If the timer was running when saved, continue running
-                if (timerState.isRunning) {
-                    timerState.isRunning = false;
-                    // Don't keep running state after refresh to avoid confusion
-                }
-            } catch (e) {
-                console.error('Error loading timer state:', e);
-                // Reset timer state if there's an error loading
-                timerState.totalSeconds = 1500;
-            }
-        }
-    }
+    updateTimerDisplay();
+    document.getElementById("startBtn").onclick = () => { startTimer(); };
+    document.getElementById("pauseBtn").onclick = () => { pauseTimer(); };
+    document.getElementById("stopBtn").onclick = () => { stopTimer(); };
+
+    // Dropdown para seleção da tarefa
+    renderTaskSelectForSession();
+
+    document.addEventListener("visibilitychange", () => {
+      saveTimerState();
+      if (document.hidden && timerState.isRunning) {
+        pauseTimer();
+      }
+    });
+    window.addEventListener("beforeunload", saveTimerState);
+  }
 });
+
+function renderTaskSelectForSession() {
+  let tasks = JSON.parse(localStorage.getItem("tasks") || "[]").filter(t => !t.completed);
+  let parent = document.getElementById("sessionTask")?.parentNode;
+  if (!parent) return;
+  let select = document.createElement("select");
+  select.id = "sessionTaskSelect";
+  select.style.marginBottom = "7px";
+  select.innerHTML = `<option value="">-- Select a task --</option>` +
+    tasks.map(t => `<option value="${t.id}" ${t.id == timerState.sessionTaskId ? "selected" : ""}>${t.title} (${t.subject})</option>`).join("");
+  select.onchange = (e) => {
+    timerState.sessionTaskId = Number(e.target.value) || null;
+    saveTimerState();
+    updateTimerDisplay();
+  };
+  if (!document.getElementById("sessionTaskSelect")) {
+    parent.insertBefore(select, document.getElementById("sessionTask"));
+  }
+}
